@@ -3,17 +3,13 @@ import json, requests, os
 from pandas.io.json import json_normalize
 from matplotlib import pyplot as plt
 
-# Fantasy team stats
+# SECTION 1: Fantasy team stats
+
 gwaverages = []
 gwnumber = []
 teamhistory = []
 teamrank = []
 
-# Player analysis
-pointspergame = []
-totalpoints = []
-totalminutes = []
-price = []
 
 
 # A function to get json data from the Fantasy PL API and write it to a file. 
@@ -43,14 +39,6 @@ get_json(os.path.expanduser('~/Desktop/Code/FantasyPL/FantasyPLTeamHistory.json'
 with open(os.path.expanduser('~/Desktop/Code/FantasyPL/FantasyPLBootstrap.json')) as json_data:
 	bootstrapdata = json.load(json_data)
 
-	# Populating our arrays with data, the next thing we do is sort the data for PPG and PPM and see the top ones, then we can 
-	# use Points/$ as well later
-	for i in range(len(bootstrapdata['elements'])):
-		pointspergame.append({bootstrapdata['elements'][i]['web_name']: bootstrapdata['elements'][i]['points_per_game']})
-		totalpoints.append({bootstrapdata['elements'][i]['web_name']: bootstrapdata['elements'][i]['total_points']})
-		totalminutes.append({bootstrapdata['elements'][i]['web_name']: bootstrapdata['elements'][i]['minutes']})
-		totalminutes.append({bootstrapdata['elements'][i]['web_name']: bootstrapdata['elements'][i]['now_cost']})
-
 with open(os.path.expanduser('~/Desktop/Code/FantasyPL/FantasyPLTeamHistory.json')) as json_data:
 	historydata = json.load(json_data)
 
@@ -72,8 +60,6 @@ for i in range(len(historydata['current'])):
 #print('My team scores:', teamhistory)
 #print('My overall rankings:', teamrank)
 #print(list(bootstrapdata['elements'][0].keys()))
-print(len(pointspergame))
-
 
 # This plot shows general averages across gameweeks for players
 fig = plt.figure()
@@ -94,3 +80,29 @@ axis2.set_title('Fantasy PL: Rank History')
 axis2.legend()
 
 plt.show()
+
+#SECTION 2: Player analysis
+
+pointspergame = []
+totalpoints = []
+totalminutes = []
+price = []
+
+# Populating our arrays with data, the next thing we do is sort the data for PPG and PPM and see the top ones, then we can 
+# use Points/$ as well later
+for i in range(len(bootstrapdata['elements'])):
+	pointspergame.append({bootstrapdata['elements'][i]['web_name']: bootstrapdata['elements'][i]['points_per_game']})
+	totalpoints.append({bootstrapdata['elements'][i]['web_name']: bootstrapdata['elements'][i]['total_points']})
+	totalminutes.append({bootstrapdata['elements'][i]['web_name']: bootstrapdata['elements'][i]['minutes']})
+	price.append({bootstrapdata['elements'][i]['web_name']: bootstrapdata['elements'][i]['now_cost']})
+
+print(pointspergame)
+print(totalpoints)
+print(totalminutes)
+print(price)
+
+
+
+
+
+
