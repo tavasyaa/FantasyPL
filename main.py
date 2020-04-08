@@ -3,11 +3,12 @@ import json, requests, os
 from pandas.io.json import json_normalize
 from matplotlib import pyplot as plt
 
-### SECTION 1: My team vs FPL averages
+### SECTION 1: My team's performance
 
 gwaverages = []
 gwnumber = []
 teamhistory = []
+teamrank = []
 
 # A function to get json data from the Fantasy PL API and write it to a file. 
 # We don't strictly need to write it to use it, but I'm doing that in case I want to use it for other purposes/look at it in Excel. 
@@ -17,15 +18,16 @@ def get_json(file_path, type):
 	# dump contents of bootstrap
 	if type == 'bootstrap':
 		data = requests.get('https://fantasy.premierleague.com/api/bootstrap-static/')
-		jsonResponse = data.json()
-		with open(file_path, 'w') as outfile:
-			json.dump(jsonResponse, outfile)
 	# dump contents of team history :)
-	else:
+	elif type == 'history':
 		data = requests.get('https://fantasy.premierleague.com/api/entry/2612666/history/')
-		jsonResponse = data.json()
-		with open(file_path, 'w') as outfile:
-			json.dump(jsonResponse, outfile)
+	# current team data
+	else:
+		data = requests.get('https://fantasy.premierleague.com/api/my-team/2612666/')
+		
+	jsonResponse = data.json()
+	with open(file_path, 'w') as outfile:
+		json.dump(jsonResponse, outfile)
 
 get_json(os.path.expanduser('~/Desktop/Code/FantasyPL/FantasyPLBootstrap.json'), 'bootstrap')
 get_json(os.path.expanduser('~/Desktop/Code/FantasyPL/FantasyPLTeamHistory.json'), 'history')
@@ -48,18 +50,31 @@ for i in range(len(historydata['current'])):
 	gwnumber.append(i+1)
 	gwaverages.append(bootstrapdata['events'][i]['average_entry_score'])
 	teamhistory.append(historydata['current'][i]['points'])
+	teamrank.append(historydata['current'][i]['overall_rank'])
 
 print('Gameweek averages:',gwaverages)
 print('For gameweek numbers:',gwnumber)
 print('My team scores:', teamhistory)
+print('My overall rankings:', teamrank)
 
 # This plot shows general averages across gameweeks for players
-plt.plot(gwnumber, teamhistory, label = 'My team')
-plt.plot(gwnumber, gwaverages, label = 'Gameweek averages')
-plt.xlabel('Gameweek #')
-plt.ylabel('Points')
-plt.title('Fantasy PL: 2019-20')
-plt.legend()
+fig = plt.figure()
+axis1 = fig.add_subplot(2, 2, 1)
+axis2 = fig.add_subplot(2, 2, 2)
+
+axis1.plot(gwnumber, teamhistory, label = 'My team')
+axis1.plot(gwnumber, gwaverages, label = 'Gameweek averages')
+axis1.set_xlabel('Gameweek #')
+axis1.set_ylabel('Points')
+axis1.set_title('Fantasy PL: Points History')
+axis1.legend()
+
+axis2.plot(gwnumber, teamrank, label = 'Overall rank')
+axis2.set_xlabel('Gameweek #')
+axis2.set_ylabel('Overall rank #')
+axis2.set_title('Fantasy PL: Rank History')
+axis2.legend()
+
 plt.show()
 
 
