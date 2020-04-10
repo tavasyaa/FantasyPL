@@ -133,9 +133,52 @@ for i in range(20):
 # then, you can go down the ppm or ppd or ppg array and see what team you can afford - and which gets the highest points tally
 # Restructure code? Set up excels etc in one file, do section 1 in one, and section 2 in the other possibly
 
-#A great idea is to look at expected points - points to find undervalued players: here eP would be 
-# xG * points for a goal + xA * points for an assist etc
+# This function could be written in a far cleaner fashion :)
+def pick_team(sortedminutes, sortedpoints, sortedppd, sortedppg):
 
+	goalkeepers = 0
+	defenders = 0
+	midfielders = 0
+	strikers = 0
+	funds = 79.6
+	teamsused = []
 
+	finalteam = []
 
+	for i in range(3):
+		if funds > (sortedpoints[i]['now_cost'] / 10) and teamsused.count(sortedpoints[i]['team_code']) < 3:
+			if (goalkeepers < 2 and sortedpoints[i]['element_type'] == 1) or (defenders < 5 and sortedpoints[i]['element_type'] == 2) or (midfielders < 4 and sortedpoints[i]['element_type'] == 3) or (strikers < 3 and sortedpoints[i]['element_type'] == 4):
+				if sortedpoints[i]['element_type'] == 1:
+					goalkeepers +=1
+				elif sortedpoints[i]['element_type'] == 2:
+					defenders += 1
+				elif sortedpoints[i]['element_type'] == 3:
+					midfielders +=1
+				else:
+					strikers += 1
 
+				finalteam.append(sortedpoints[i]['web_name'])
+				funds = funds - (sortedpoints[i]['now_cost'] / 10)
+				teamsused.append(sortedpoints[i]['team_code'])
+
+# You can do this with subs too, a super useful tool. You should check how this would perform compared to your team every gw
+	for i in range(len(sortedppd)):
+		if funds > (sortedppd[i]['now_cost'] / 10) and teamsused.count(sortedppd[i]['team_code']) < 3:
+			if (goalkeepers < 1 and sortedppd[i]['element_type'] == 1) or (defenders < 4 and sortedppd[i]['element_type'] == 2) or (midfielders < 3 and sortedppd[i]['element_type'] == 3) or (strikers < 3 and sortedppd[i]['element_type'] == 4):
+				if sortedppd[i]['element_type'] == 1:
+					goalkeepers +=1
+				elif sortedppd[i]['element_type'] == 2:
+					defenders += 1
+				elif sortedppd[i]['element_type'] == 3:
+					midfielders +=1
+				else:
+					strikers += 1
+
+				finalteam.append(sortedppd[i]['web_name'])
+				funds = funds - (sortedppd[i]['now_cost'] / 10)
+				teamsused.append(sortedppd[i]['team_code'])
+				print(funds)
+
+	return finalteam
+
+print('Our team is:', pick_team(sortedminutes, sortedpoints, sortedppd, sortedppg))
