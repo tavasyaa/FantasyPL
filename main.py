@@ -75,7 +75,7 @@ axis2.set_ylabel('Overall rank #')
 axis2.set_title('Fantasy PL: Rank History')
 axis2.legend()
 
-#plt.show()
+plt.show()
 
 #SECTION 2: Player analysis
 
@@ -129,9 +129,12 @@ for i in range(20):
 	print(sortedppg[i]['web_name'], sortedppg[i]['points_per_game'])
 
 
-# SECTION 3: Building a team with the ranked data
+# SECTION 4: Building a team with the ranked data
 # then, you can go down the ppm or ppd or ppg array and see what team you can afford - and which gets the highest points tally
 # Restructure code? Set up excels etc in one file, do section 1 in one, and section 2 in the other possibly
+
+#A great idea is to look at expected points - points to find undervalued players: here eP would be 
+# xG * points for a goal + xA * points for an assist etc
 
 
 
