@@ -16,9 +16,9 @@ We'll play a 4-3-3, and we'll pick the cheapest bench possible. As of today (04/
 
 ###### The Eyeball Method
 
-GK: Pope(P/$)
-DEF: Soyuncu(P/$), Alonso(P/G), Baldock(P/$), Lundstram(P/$)
-MID: Salah(P), De Bruyne(P), Henderson(P/$)
+GK: Pope(P/$)\
+DEF: Soyuncu(P/$), Alonso(P/G), Baldock(P/$), Lundstram(P/$)\
+MID: Salah(P), De Bruyne(P), Henderson(P/$)\
 ST:  Jota(+PD), Vardy(-PD), Jimenez(EP)
 
 ###### The Algorithm Method
